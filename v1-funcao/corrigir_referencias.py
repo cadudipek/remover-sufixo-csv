@@ -10,7 +10,7 @@ def corrigir_referencias(input_file, output_file):
 
     try:
         # Carregar o CSV para um DataFrame SEM modificar os tipos
-        df = pd.read_csv(input_file, sep=';', dtype=str)  
+        df = pd.read_csv(input_file, sep=';', dtype=str)
 
         # Remover o sufixo ".03" da coluna "Referencia"
         df['Referencia'] = df['Referencia'].apply(lambda x: str(x).removesuffix('.03') if isinstance(x, str) else x)
@@ -24,8 +24,8 @@ def corrigir_referencias(input_file, output_file):
         print(f"Erro ao processar o arquivo: {e}")
 
 # Caminhos dos arquivos
-input_file = r'sua_planilha.csv'  
-output_file = r'C:/Users/Marketing/Desktop/Arquivo CSV/saida_corrigida.csv'  
+input_file = os.path.join('data', 'sua_planilha.csv')  # Caminho do arquivo de entrada
+output_file = os.path.join('data', 'saida_corrigida.csv')  # Caminho do arquivo de saída
 
 # Executar a função
 corrigir_referencias(input_file, output_file)
