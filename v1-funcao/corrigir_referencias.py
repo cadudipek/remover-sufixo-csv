@@ -1,8 +1,7 @@
 import pandas as pd
-
 import os
 
-# Carregar o CSV original
+# Função para corrigir as referências
 def corrigir_referencias(input_file, output_file):
     # Verificar se o arquivo de entrada existe
     if not os.path.isfile(input_file):
@@ -10,22 +9,23 @@ def corrigir_referencias(input_file, output_file):
         return
 
     try:
-        # Carregar o CSV para um DataFrame
-        df = pd.read_csv(input_file, sep=';')
-        
-        # Remover o sufixo ".03" das referências
-        df['Referencia'] = df['Referencia'].apply(lambda x: str(x).rstrip('.03') if str(x).endswith('.03') else x)
-        
-        # Salvar o arquivo corrigido
+        # Carregar o CSV para um DataFrame SEM modificar os tipos
+        df = pd.read_csv(input_file, sep=';', dtype=str)  
+
+        # Remover o sufixo ".03" da coluna "Referencia"
+        df['Referencia'] = df['Referencia'].apply(lambda x: str(x).removesuffix('.03') if isinstance(x, str) else x)
+
+        # Salvar o arquivo corrigido mantendo os dados intactos
         df.to_csv(output_file, index=False, sep=';')
+
         print(f'Arquivo corrigido gerado: {output_file}')
     
     except Exception as e:
-        print(f"Erro ao ler o arquivo: {e}")
+        print(f"Erro ao processar o arquivo: {e}")
 
-# Usar o caminho do arquivo de entrada e saída
-input_file = r'sua_planilha.csv'  # Caminho do arquivo CSV de entrada
-output_file = r'C:/Users/Marketing/Desktop/Arquivo CSV/saida_corrigida.csv'  # Caminho do arquivo CSV corrigido
+# Caminhos dos arquivos
+input_file = r'sua_planilha.csv'  
+output_file = r'C:/Users/Marketing/Desktop/Arquivo CSV/saida_corrigida.csv'  
 
-# Executar a função para corrigir as referências
+# Executar a função
 corrigir_referencias(input_file, output_file)
